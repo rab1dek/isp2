@@ -16,20 +16,29 @@ use \App\Models\SpotifyCSV;
 */
 
 Route::get('/', function () {
-    return view('spotify');
+    return view('spotify', [
+        'spotify' => SpotifyCSV::paginate()
+    ]);
 });
 Route::post('/', function () {
+    DB::disableQueryLog();
+    DB::connection()->unsetEventDispatcher();
     $csv = Reader::createFromPath(request()->file('csv_file')->getRealPath());
     $csv->setDelimiter(';');
     $csv->setHeaderOffset(0);
+    $spotifiescsv = [];
+    SpotifyCSV::truncate();
     foreach($csv as $record){
-        SpotifyCSV::create([
+        $spotifiescsv[] = [
             'Position' => $record['Position'],
             'Track Name' => $record['Track Name'],
             'Artist' => $record['Artist'],
             'Streams' => $record['Streams'],
-            'Date' => \Carbon\Carbon::parse($record['Date'])
-        ]);
+            'Date' => \Carbon\Carbon::parse($record['Date']),
+            'created_at' => now(),
+            'updated_at' => now()
+        ];
     }
-    dd('Record imported');
+    SpotifyCSV::insert($spotifiescsv);
+    return redirect()->back()->with('success', 'All records imported.');
 });

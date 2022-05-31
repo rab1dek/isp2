@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SpotifyCSV extends Model
 {
     use HasFactory;
-    protected $casts = [
-        'Date' => 'datetime',
-    ];
+    protected $table = 'spotifycsv';
+   
     protected $guarded = [];
 }
