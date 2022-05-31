@@ -41,5 +41,5 @@
         </tbody>
     </table>
 
-    {{ $spotify->links() }}
+    {{ $spotify->links() }} 
     </html>
