@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use \League\Csv\Reader;
 use \App\Models\SpotifyCSV;
-
+use App\Http\Controllers\ReadXmlController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +14,12 @@ use \App\Models\SpotifyCSV;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//.. other code
+
+# Import controller
+
+
+Route::match(["get", "post"], "read-xml", [ReadXmlController::class, "index"])->name('xml-upload');
 
 Route::get('/', function () {
     return view('spotify', [
